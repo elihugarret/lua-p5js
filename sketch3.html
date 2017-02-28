@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="js/p5.js"></script>
+    <script src="js/p5.dom.js"></script>
+    <script src="js/p5.sound.js"></script>
+    <script type="text/lua">
+      -- source: https://www.openprocessing.org/sketch/394718
+      local p5 = window
+
+      local num = 1000
+      local vx = {}
+      local vy = {}
+      local x = {}
+      local y = {}
+      local ax = {}
+      local ay = {}
+
+      local magnetism = 100
+      local radius = 1
+      local gensoku = .95
+      local distance, sokudo
+      local r, g, b
+      local posx,posy
+
+      function p5.setup()
+        p5:createCanvas(p5.windowWidth, p5.windowHeight)
+        p5:noStroke()
+        p5:fill(0)
+        p5:rectMode(p5.RADIUS)
+        p5:background(0)
+        p5:blendMode(p5.ADD)
+        for i = 1, num do
+          x[i] = math.random(p5.width)
+          y[i] = math.random(p5.height)
+          vx[i] = 0
+          vy[i] = 0
+          ax[i] = 0
+          ay[i] = 0
+        end
+      end
+
+      function p5.draw()
+        p5:fill(0)
+        p5:rect(0, 0, p5.width, p5.height)
+        for i = 1, num do
+          distance = p5:dist(p5.mouseX, p5.mouseY, x[i], y[i])
+          if distance > 3 then
+            ax[i] = magnetism * (p5.mouseX - x[i]) / (distance * distance)
+            ay[i] = magnetism * (p5.mouseY - y[i]) / (distance * distance)
+          end
+          vx[i] = vx[i] + ax[i]
+          vy[i] = vy[i] + ay[i]
+          vx[i] = vx[i] * gensoku
+          vy[i] = vy[i] * gensoku
+          x[i] = x[i] + vx[i]
+          y[i] = y[i] + vy[i]
+          sokudo = p5:dist(0, 0, vx[i], vy[i])
+          r = p5:map(sokudo, 0, 5, 128, 105)
+          g = p5:map(sokudo, 0, 5, 128, 125)
+          b = p5:map(sokudo, 0, 5, 128, 155)
+          p5:fill(r, g, b, 32)
+          p5:rect(x[i], y[i], radius, radius)
+        end
+      end
+    </script>
+  </head>
+  <body style="background:black;"></body>
+  <script src="js/starlight.js" data-run-script-tags></script>
+</html>
