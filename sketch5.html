@@ -7,39 +7,42 @@
     <script src="js/p5.dom.js"></script>
     <script src="js/p5.sound.js"></script>
     <script type="text/lua">
-      local p5 = window
 
-      local n = 256
-      local minRad = 50
-      local maxRad = 600
-      local nfAng = .01
-      local nfTime = .005
-      local ang, rad, x, y
+    local p5 = window
 
-      function p5.setup()
-        p5:createCanvas(p5.windowWidth, p5.windowHeight)
-        p5:background(0)
-        p5:noFill()
-        p5:stroke(255, 3)
+    local n = 256
+    local minRad = 50
+    local maxRad = 600
+    local nfAng = .01
+    local nfTime = .005
+    local ang, rad, x, y
+
+    function p5.setup()
+      p5:createCanvas(p5.windowWidth, p5.windowHeight)
+      p5:background"#002451"
+      p5:noFill()
+    end
+
+    function p5.draw()
+      p5:translate(p5.width / 2, p5.height / 2)
+      p5:stroke(255, 0, 255, 22)
+      p5:beginShape()
+      for i = 0, n - 1 do
+        ang = p5:map(i, 0, n, 0, math.tanh(p5.TWO_PI) * p5.TWO_PI)
+        rad = p5:map(p5:noise(i * nfAng, p5.frameCount * nfTime), 0, 1, minRad, maxRad)
+        x = rad * math.sin(ang)
+        y = rad * math.cos(ang)
+        --p5:curveVertex(p5:random(x, y), p5:random(x, y))
+        p5:curveVertex(x, y)
       end
+    p5:endShape(p5.CLOSE)
+  end
 
-      function p5.draw()
-        p5:translate(p5.width / 2, p5.height / 2)
-        p5:beginShape()
-          for i = 0, n - 1 do
-            ang = p5:map(i, 0, n, 0, p5.TWO_PI)
-            rad = p5:map(p5:noise(i * nfAng, p5.frameCount * nfTime), 0, 1, minRad, maxRad)
-            x = rad * math.cos(ang)
-            y = rad * math.sin(ang)
-            p5:curveVertex(x, p5:random(x, y))
-            p5:curveVertex(x, y)
-          end
-        p5:endShape(p5.CLOSE)
-      end
+  function p5.mousePressed() p5:background"#002451" end
 
-      function p5.mousePressed() p5:background(0) end
     </script>
   </head>
-  <body style="background:black;"></body>
+  <body style="background:#002451;">
+  </body>
   <script src="js/starlight.js" data-run-script-tags></script>
 </html>
