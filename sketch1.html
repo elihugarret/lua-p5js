@@ -7,23 +7,23 @@
     <script src="js/p5.dom.js"></script>
     <script src="js/p5.sound.js"></script>
     <script type="text/lua">
-      local p5 = window
 
+      local p5 = window
       local x = 70
       local speed = 1
       local radius = 90
       local angle = 0
 
       function p5.setup()
-        p5:createCanvas(800, 800)
+        p5:createCanvas(p5.windowWidth, p5.windowHeight)
         p5:smooth()
         p5:noStroke()
-        p5:background(0)
+        p5:background"#002451"
       end
 
       function p5.draw()
-        p5:fill(0, 4)
-        p5:stroke(200, 20)
+        p5:fill(0, 250, 220, 4)
+        p5:stroke(255, 0, 200, 20)
         angle = angle - .005
         p5:translate(x, p5.height / 2)
         p5:translate(y, p5.width)
@@ -39,6 +39,7 @@
       end
     </script>
   </head>
-  <body style="background:black;"></body>
+  <body style="background:#002451;">
+  </body>
   <script src="js/starlight.js" data-run-script-tags></script>
 </html>
