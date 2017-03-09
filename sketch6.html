@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="js/p5.js"></script>
+    <script src="js/p5.dom.js"></script>
+
+    <script>
+      window.starlight = {
+        config: {
+          env: {
+            create_canvas: function (w, h){
+              return createCanvas(w, h);
+            },
+            background: function (b) {
+              return background(b);
+            },
+            no_fill: function (){
+              return noFill();
+            },
+            noise_seed: function (seed){
+              return noiseSeed(seed);
+            },
+            random: function (x, y) {
+              return random(x, y);
+            },
+          },
+        },
+      };
+    </script>
+
+    <script type="text/lua">
+
+      local p5 = window
+
+      local np = 300
+      local startcol
+      local sx, sy
+      local angle, cx, cy, xx, yy, v, hue
+      local sin = math.sin
+      local cos = math.cos
+
+      function p5.setup()
+        create_canvas(p5.windowWidth, p5.windowHeight)
+        background"#002451"
+        no_fill()
+        noise_seed(random(100))
+        startcol = random(255)
+      end
+
+      function p5.draw()
+        p5:beginShape()
+        for i = 0, np - 1 do
+          angle = p5:map(i, 0, np, 0, p5.TWO_PI)
+          cx = p5.frameCount * 2 - 200
+          cy = p5.height / 2 + 50 * sin(p5.frameCount / 50)
+          xx = 100 * cos(angle + cx / 10)
+          yy = 100 * sin(angle + cx / 10)
+          v = p5:createVector(xx, yy)
+          xx = (xx + cx) / 150
+          yy = (yy + cy) / 150
+          v:mult(1 + 1.5 * p5:noise(xx, yy))
+          p5:vertex(cx + v.x, cy + v.y)
+          if i == 0 then
+            sx = cx + v.x
+            sy = cy + v.y
+          end
+        end
+        p5:colorMode(p5.HSB)
+        hue = cx / 10 - startcol
+        if (hue < 0 ) then hue = hue + 255 end
+        p5:stroke(hue, 100, 120)
+        p5:strokeWeight(.1)
+        p5:vertex(sx, sy)
+        p5:endShape()
+        if p5.frameCount > p5.width + 500 then p5:noLoop() end
+      end
+
+    </script>
+  </head>
+  <body style="background:#002451;"></body>
+  <script src="js/starlight.js" data-run-script-tags></script>
+</html>
